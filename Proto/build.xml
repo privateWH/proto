@@ -1,0 +1,45 @@
+<project name="Proto" default="jar">
+	<property name="compile.libs" value="libs" />
+	<property name="build.dir" value="build" />
+	<property name="build.libs.dir" value="build/libs" />
+		<target name="clean">
+		<delete dir="build" />
+	</target>
+	<target name="compile">
+		<mkdir dir="build/classes" />
+		<copy todir="${build.libs.dir}" flatten="yes" failonerror="yes">
+			<fileset dir="${compile.libs}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<javac srcdir="src" destdir="build/classes">
+			<classpath refid="deps-jars" />
+			<classpath>
+				<!-- <pathelement path="build/libs/commons-fileupload-1.3.1.jar" />	
+			 	-->
+			 
+
+			</classpath>
+		</javac>
+	</target>
+	<target name="jar">
+		<mkdir dir="build/jar" />
+		<jar destfile="build/jar/Proto.jar" basedir="build/classes">
+			<manifest>
+				<attribute name="Main-Class" value="proto.fileupload.HelloWorld" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="run" depends="clean,compile,jar">
+		<java jar="build/jar/Proto.jar" fork="true">
+			<classpath refid="deps-jars" />
+		</java>
+	</target>
+
+	<path id="deps-jars">
+		<fileset dir="build/libs" includes="*.jar" />
+	</path>
+</project>
+
+<!-- https://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html -->
